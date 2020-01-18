@@ -1,5 +1,5 @@
 class FlattenArrayService
-  attr_reader :array, :flattened_array
+  attr_reader :array
 
   def initialize(array)
     unless array.is_a?(Array)
@@ -11,7 +11,6 @@ class FlattenArrayService
     end
 
     @array = array
-    @flattened_array = []
   end
 
   def self.run(array)
@@ -21,18 +20,16 @@ class FlattenArrayService
   def run
     return print("Thy array is flat!\n#{array}") unless has_nested_array?
 
-    flatten_array
-    flattened_array
+    flatten_array(array)
   end
  
   private
 
-  def flatten_array
-    array.each do |element|
-      next flattened_array.push(element) unless element.is_a?(Array)
+  def flatten_array(array)
+    array.each_with_object([]) do |element, flattened_array|
+      next (flattened_array << element) unless element.is_a?(Array)
 
-      @array = element
-      flatten_array
+      flattened_array.concat(flatten_array(element))
     end
   end
 
