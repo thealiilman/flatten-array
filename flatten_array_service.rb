@@ -1,5 +1,5 @@
 class FlattenArrayService
-  attr_accessor :array, :flattened_array
+  attr_reader :array, :flattened_array
 
   def initialize(array)
     unless array.is_a?(Array)
