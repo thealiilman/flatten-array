@@ -2,7 +2,13 @@ class FlattenArrayService
   attr_accessor :array, :flattened_array
 
   def initialize(array)
-    validate_array_on_initialize(array)
+    unless array.is_a?(Array)
+      raise(ArgumentError, 'The argument given is not an array!')
+    end
+
+    if array.empty?
+      raise(ArgumentError, 'The argument given is an empty array!')
+    end
 
     @array = array
     @flattened_array = []
@@ -13,10 +19,12 @@ class FlattenArrayService
   end
 
   def run
+    return print("Thy array is flat!\n#{array}") unless has_nested_array?
+
     flatten_array
     flattened_array
   end
-
+ 
   private
 
   def flatten_array
@@ -28,17 +36,7 @@ class FlattenArrayService
     end
   end
 
-  def validate_array_on_initialize(array)
-    unless array.is_a?(Array)
-      raise(ArgumentError, 'The argument given is not an array!')
-    end
-
-    if array.empty?
-      raise(ArgumentError, 'The argument given is an empty array!')
-    end
-
-    unless array.any? { |element| element.is_a?(Array) }
-      raise(ArgumentError, "Thy array is flat!\n#{array}")
-    end
+  def has_nested_array?
+    array.any? { |element| element.is_a?(Array) }
   end
 end

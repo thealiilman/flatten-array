@@ -27,17 +27,6 @@ describe FlattenArrayService do
           )
         end
       end
-
-      context 'flat array as an argument' do
-        let(:array) { [1, 2, 3] }
-  
-        it do
-          expect { subject }.to raise_error(
-            ArgumentError,
-            "Thy array is flat!\n#{array}"
-          )
-        end
-      end
     end
 
     context 'successful' do
@@ -59,6 +48,16 @@ describe FlattenArrayService do
         let(:array) { [[1, [2]], 3] }
 
         it { is_expected.to eq(flattened_array) }
+      end
+    end
+
+    context 'flat array as an argument' do
+      let(:array) { [1, 2, 3] }
+
+      it 'returns the same array along with a message' do
+        expect { subject }.to output(
+          "Thy array is flat!\n#{array}"
+        ).to_stdout
       end
     end
   end
